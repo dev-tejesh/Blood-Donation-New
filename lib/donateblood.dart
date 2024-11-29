@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,9 @@ class Donateblood extends StatefulWidget {
 }
 
 class _DonatebloodState extends State<Donateblood> {
-  TextEditingController email = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController city = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController phone = TextEditingController();
   final TextEditingController _controller = TextEditingController();
 
   var items = [
@@ -29,9 +29,9 @@ class _DonatebloodState extends State<Donateblood> {
     'O+',
     'O−',
   ];
-  late String countryValue;
-  late String stateValue;
-  late String cityValue;
+  late String countryValue = '';
+  late String stateValue = '';
+  late String cityValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -204,16 +204,29 @@ class _DonatebloodState extends State<Donateblood> {
         email.text.isEmpty ||
         phone.text.isEmpty ||
         _controller.text.isEmpty ||
+        countryValue.isEmpty ||
+        stateValue.isEmpty ||
         cityValue.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('All fields are required!'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      showError("All fields are required!");
+    } else if (name.text.length > 15) {
+      showError("Name should not exceed 15 characters!");
+    } else if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        .hasMatch(email.text)) {
+      showError("Please enter a valid email address!");
+    } else if (!RegExp(r"^\d+$").hasMatch(phone.text)) {
+      showError("Phone number should only contain numbers!");
     } else {
       createUser();
     }
+  }
+
+  void showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   Future createUser() async {
@@ -225,6 +238,8 @@ class _DonatebloodState extends State<Donateblood> {
         "phone": phone.text,
         "uid": FirebaseAuth.instance.currentUser!.uid,
         "blood": _controller.text,
+        "country": countryValue,
+        "state": stateValue,
         "city": cityValue
       });
       Get.back();
