@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 
 class Donateblood extends StatefulWidget {
-  const Donateblood({Key? key}) : super(key: key);
+  const Donateblood({super.key});
 
   @override
   State<Donateblood> createState() => _DonatebloodState();
@@ -16,9 +16,9 @@ class _DonatebloodState extends State<Donateblood> {
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
-  // TextEditingController _controller = TextEditingController();
   TextEditingController city = TextEditingController();
-  final TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller = TextEditingController();
+
   var items = [
     "A+",
     "A−",
@@ -37,175 +37,96 @@ class _DonatebloodState extends State<Donateblood> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text(
+          'Donate Blood',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Colors.red.shade700,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 2.0, 0.0, 0.0),
-              child: Text(
-                'Name',
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: TextField(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.red.shade50, Colors.red.shade100],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildTextField(
                   controller: name,
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                      fillColor: Colors.indigo[50],
-                      filled: true,
-                      border: InputBorder.none,
-                      hintText: 'Name',
-                      // prefixIcon: Icon(Icons.email),
-                      // contentPadding: EdgeInsets.all(8.0),
-                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 10),
-                      hintStyle: TextStyle(color: Colors.white)),
+                  label: 'Name',
+                  hint: 'Enter your name',
+                  prefixIcon: Icons.person,
                 ),
-
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 2.0, 0.0, 0.0),
-              child: Text(
-                'email',
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: TextField(
+                const SizedBox(height: 10),
+                _buildTextField(
                   controller: email,
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                      fillColor: Colors.indigo[50],
-                      filled: true,
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                      prefixIcon: Icon(Icons.email),
-                      // contentPadding: EdgeInsets.all(8.0),
-                      contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 10),
-                      hintStyle: TextStyle(color: Colors.white)),
+                  label: 'Email',
+                  hint: 'Enter your email',
+                  prefixIcon: Icons.email,
                 ),
-
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 2.0, 0.0, 0.0),
-              child: Text(
-                'Phone',
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: TextField(
+                const SizedBox(height: 10),
+                _buildTextField(
                   controller: phone,
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                      fillColor: Colors.indigo[50],
-                      filled: true,
-                      border: InputBorder.none,
-                      hintText: 'Phone',
-                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 10),
-                      // prefixIcon: Icon(Icons.email),
-                      // contentPadding: EdgeInsets.all(8.0),
-                      hintStyle: TextStyle(color: Colors.white)),
+                  label: 'Phone',
+                  hint: 'Enter your phone number',
+                  prefixIcon: Icons.phone,
                 ),
-
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1.0,
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 2.0, 0.0, 0.0),
-              child: Text(
-                'Blood Type',
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                // height: 40,
-                // width: 1000,
-                child: TextField(
-                  controller: _controller,
-                  enabled: true,
-                  decoration: InputDecoration(
-                    prefixIcon: new PopupMenuButton<String>(
-                      // color: Colors.black,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (String value) {
-                        _controller.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return items.map<PopupMenuItem<String>>((String value) {
-                          return new PopupMenuItem(
-                              child: new Text(value), value: value);
-                        }).toList();
-                      },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextField(
+                      controller: _controller,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'Blood Type',
+                        border: InputBorder.none,
+                        prefixIcon: PopupMenuButton<String>(
+                          icon: const Icon(Icons.arrow_drop_down),
+                          onSelected: (String value) {
+                            _controller.text = value;
+                          },
+                          itemBuilder: (context) {
+                            return items
+                                .map((item) => PopupMenuItem(
+                                      value: item,
+                                      child: Text(item),
+                                    ))
+                                .toList();
+                          },
+                        ),
+                      ),
                     ),
-                    hintText: "Choose your blood group",
                   ),
                 ),
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(15.0, 2.0, 0.0, 0.0),
-            //   child: Text(
-            //     'City',
-            //     textAlign: TextAlign.left,
-            //   ),
-            // ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                // height: 600,
-                child: Column(
-                  children: [
-                    SelectState(
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectState(
+                      dropdownColor: Colors.red.shade50,
+                      style: const TextStyle(color: Colors.black),
                       onCountryChanged: (value) {
                         setState(() {
                           countryValue = value;
@@ -222,89 +143,106 @@ class _DonatebloodState extends State<Donateblood> {
                         });
                       },
                     ),
-                    // InkWell(
-                    //   onTap:(){
-                    //     print('country selected is $countryValue');
-                    //     print('country selected is $stateValue');
-                    //     print('country selected is $cityValue');
-                    //   },
-                    //   child: Text(' Check')
-                    // )
-                  ],
-                )),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Container(
-            //     child: TextField(
-            //       controller: city,
-            //       textAlign: TextAlign.start,
-            //       decoration: InputDecoration(
-            //           fillColor: Colors.indigo[50],
-            //           filled: true,
-            //           border: InputBorder.none,
-            //           hintText: 'City',
-            //           // prefixIcon: Icon(Icons.email),
-            //           // contentPadding: EdgeInsets.all(8.0),
-            //           contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 10),
-            //           hintStyle: TextStyle(color: Colors.white)),
-            //     ),
-
-            //     height: 40,
-            //     width: 1000,
-            //     // color: Colors.white,
-            //     decoration: BoxDecoration(
-            //       color: Colors.white,
-            //       shape: BoxShape.rectangle,
-            //       border: Border.all(
-            //         color: Colors.black,
-            //         width: 1.0,
-            //       ),
-            //       borderRadius: BorderRadius.all(Radius.circular(5)),
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  // final user = User(
-                  //   name: name.text,
-                  //   email: email.text,
-                  //   phone: int.parse(phone.text),
-                  //   blood: _controller.text,
-                  //   city: city.text,
-                  // );
-                  createUser();
-                },
-                child: Container(
-                  height: 40,
-                  width: 1000,
-                  // color: Colors.blue,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue,
                   ),
-                  child: Center(child: Text('Create Profile')),
                 ),
-              ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => validateAndSubmit(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red.shade700,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Create Profile',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    IconData? prefixIcon,
+  }) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+          fillColor: Colors.red.shade50,
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void validateAndSubmit() {
+    if (name.text.isEmpty ||
+        email.text.isEmpty ||
+        phone.text.isEmpty ||
+        _controller.text.isEmpty ||
+        cityValue.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('All fields are required!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else {
+      createUser();
+    }
+  }
+
   Future createUser() async {
-    EasyLoading.show(status: "saving");
-    await FirebaseFirestore.instance.collection('users').doc().set({
-      "name": name.text,  
-      "email": email.text,
-      "phone": phone.text,
-      "uid": FirebaseAuth.instance.currentUser!.uid,
-      "blood": _controller.text,
-      "city": cityValue
-    });
-    Get.back();
-    EasyLoading.dismiss();
+    EasyLoading.show(status: "Saving...");
+    try {
+      await FirebaseFirestore.instance.collection('users').doc().set({
+        "name": name.text,
+        "email": email.text,
+        "phone": phone.text,
+        "uid": FirebaseAuth.instance.currentUser!.uid,
+        "blood": _controller.text,
+        "city": cityValue
+      });
+      Get.back();
+      EasyLoading.dismiss();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile created successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      EasyLoading.dismiss();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
