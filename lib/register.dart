@@ -1,9 +1,9 @@
+
+
 import 'package:blooddonation/homepage.dart';
+import 'package:blooddonation/loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebasepractice/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,227 +14,195 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passcontroller = TextEditingController();
-  TextEditingController displaycontroller = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController displayController = TextEditingController();
   String error = "";
   bool showPass = true;
+
+  @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'REGISTER',
-              style: TextStyle(color: Colors.cyan[200], fontSize: 40),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: const BoxDecoration(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.cyan.shade200,
+              Colors.cyan.shade800,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'REGISTER',
+                  style: TextStyle(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Center(
-                  child: TextField(
-                    controller: displaycontroller,
-                    textAlign: TextAlign.start,
-                    decoration: InputDecoration(
-                        fillColor: Colors.cyan[200],
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        hintText: 'DISPLAY NAME',
-                        prefixIcon: const Icon(Icons.person),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        hintStyle: const TextStyle(color: Colors.white)),
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Center(
-                  child: TextField(
-                    controller: emailcontroller,
-                    textAlign: TextAlign.start,
-                    decoration: InputDecoration(
-                        fillColor: Colors.cyan[200],
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        hintText: 'EMAIL',
-                        prefixIcon: const Icon(Icons.email),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        hintStyle: const TextStyle(color: Colors.white)),
-                  ),
+                const SizedBox(height: 30),
+                _buildTextField(
+                  controller: displayController,
+                  hintText: 'Display Name',
+                  icon: Icons.person,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 40,
-                width: 1000,
-                // color: Colors.white,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Center(
-                  child: TextField(
-                    controller: passcontroller,
-                    obscureText: showPass,
-                    textAlign: TextAlign.start,
-                    decoration: InputDecoration(
-                        fillColor: Colors.cyan[200],
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        hintText: 'PASSWORD',
-                        prefixIcon: const Icon(Icons.lock),
-                        suffixIcon: InkWell(
-                            onTap: () {
-                              showPass = !showPass;
-                              setState(() {});
-                            },
-                            child: const Icon(Icons.remove_red_eye)),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        hintStyle: const TextStyle(color: Colors.white)),
-                  ),
+                const SizedBox(height: 20),
+                _buildTextField(
+                  controller: emailController,
+                  hintText: 'Email',
+                  icon: Icons.email,
                 ),
-              ),
-            ),
-            Text(
-              error,
-              style: const TextStyle(color: Colors.red),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: InkWell(
-            //     onTap: () async {
-            //       try {
-            //         print("came");
-            //         UserCredential user = await FirebaseAuth.instance
-            //             .createUserWithEmailAndPassword(
-            //                 email: emailcontroller.text,
-            //                 password: passcontroller.text);
-
-            //         Navigator.push(context,
-            //             MaterialPageRoute(builder: (context) {
-            //           return const Homepage();
-            //         }));
-            //       } on FirebaseAuthException catch (e) {
-            //         error = e.message.toString();
-            //         setState(() {});
-            //       }
-            //     },
-            //     child: Container(
-            //       height: 40,
-            //       width: 1000,
-            //       decoration: BoxDecoration(
-            //           color: Colors.cyan[200],
-            //           border: Border.all(
-            //             color: Colors.white,
-            //           ),
-            //           borderRadius:
-            //               const BorderRadius.all(Radius.circular(20))),
-            //       child: const Center(
-            //         child: Text(
-            //           'CREATE ACCOUNT',
-            //           style: TextStyle(color: Colors.white, fontSize: 15),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () async {
-                  if (emailcontroller.text.isEmpty ||
-                      passcontroller.text.isEmpty) {
-                    error = "Email and password cannot be empty.";
-                    setState(() {});
-                    return;
-                  }
-
-                  if (!RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(emailcontroller.text)) {
-                    error = "Please enter a valid email.";
-                    setState(() {});
-                    return;
-                  }
-
-                  if (passcontroller.text.length < 6) {
-                    error = "Password must be at least 6 characters long.";
-                    setState(() {});
-                    return;
-                  }
-
-                  try {
-                    print("Creating user...");
-                    UserCredential user = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: emailcontroller.text,
-                            password: passcontroller.text);
-
-                    print("User created: ${user.user?.email}");
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return const Homepage();
-                    // }));
-                    // Get
-                    Get.to(() => const Homepage());
-                  } on FirebaseAuthException catch (e) {
-                    error = e.message ?? "An error occurred: ${e.code}";
-                    print("Error: ${e.code}, Message: ${e.message}");
-                    setState(() {});
-                  }
-                },
-                child: Container(
-                  height: 40,
-                  width: 1000,
-                  decoration: BoxDecoration(
-                      color: Colors.cyan[200],
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
-                  child: const Center(
-                    child: Text(
-                      'CREATE ACCOUNT',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                const SizedBox(height: 20),
+                _buildTextField(
+                  controller: passController,
+                  hintText: 'Password',
+                  icon: Icons.lock,
+                  isPassword: true,
+                ),
+                if (error.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    error,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
+                const SizedBox(height: 40),
+                _buildRegisterButton(screenWidth),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Get.to(const LoginPage()); // Navigate back to Login Page
+                  },
+                  child: const Text(
+                    'Already have an account? Log in',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ));
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword && showPass,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey[700]),
+          prefixIcon: Icon(icon, color: Colors.cyan[700]),
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    showPass ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.cyan[700],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      showPass = !showPass;
+                    });
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: Colors.transparent,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        style: const TextStyle(color: Colors.black),
+      ),
+    );
+  }
+
+  Widget _buildRegisterButton(double screenWidth) {
+    return ElevatedButton(
+      onPressed: () async {
+        if (emailController.text.isEmpty || passController.text.isEmpty) {
+          setState(() {
+            error = "Email and password cannot be empty.";
+          });
+          return;
+        }
+
+        if (!RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(emailController.text)) {
+          setState(() {
+            error = "Please enter a valid email.";
+          });
+          return;
+        }
+
+        if (passController.text.length < 6) {
+          setState(() {
+            error = "Password must be at least 6 characters long.";
+          });
+          return;
+        }
+
+        try {
+          UserCredential user = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                  email: emailController.text, password: passController.text);
+          Get.to(() => const Homepage());
+        } on FirebaseAuthException catch (e) {
+          setState(() {
+            error = e.message ?? "An error occurred: ${e.code}";
+          });
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        shadowColor: Colors.black.withOpacity(0.2),
+        elevation: 8,
+      ),
+      child: Text(
+        'CREATE ACCOUNT',
+        style: TextStyle(
+          color: Colors.cyan[800],
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 }

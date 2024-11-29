@@ -1,8 +1,7 @@
+
 import 'package:blooddonation/loginpage.dart';
 import 'package:blooddonation/register.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebasepractice/loginpage.dart';
-// import 'package:firebasepractice/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -16,39 +15,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'Blood Donation',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-        ),
-        builder: EasyLoading.init(),
-        home: MyHomePage(title: 'dddd '));
+      title: 'Blood Donation',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      builder: EasyLoading.init(),
+      home: const MyHomePage(title: 'Blood Donation'),
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -57,85 +38,144 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _isTextVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        _isTextVisible = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.cyan[200],
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome',
-              style: TextStyle(fontSize: 40),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Center(
-                child: Text(
-                  'Blood Donation Costs You Nothing, But It  Can Mean The World To Someone In Need',
-                  style: TextStyle(fontSize: 20),
-                ),
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFff7e5f), Color(0xFFfeb47b)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return LoginPage();
-                  }));
-                },
-                child: Container(
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(color: Colors.cyan[200], fontSize: 15),
-                    ),
-                  ),
-                  height: 40,
-                  width: 1000,
-                  // color: Colors.white,
-                  decoration: const BoxDecoration(
+          ),
+          // Main Content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedOpacity(
+                  opacity: _isTextVisible ? 1.0 : 0.0,
+                  duration: const Duration(seconds: 1),
+                  child: const Text(
+                    'Welcome',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
-                child: Container(
-                  child: Center(
-                    child: Text(
-                      'REGISTER',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      shadows: [
+                        Shadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(3, 3),
+                        ),
+                      ],
                     ),
                   ),
-                  height: 40,
-                  width: 1000,
-                  decoration: BoxDecoration(
-                      color: Colors.cyan[200],
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
                 ),
-              ),
+                const SizedBox(height: 20),
+                AnimatedOpacity(
+                  opacity: _isTextVisible ? 1.0 : 0.0,
+                  duration: const Duration(seconds: 1),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      'Blood Donation Costs You Nothing, But It Can Mean The World To Someone In Need',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white.withOpacity(0.9),
+                        fontStyle: FontStyle.italic,
+                        shadows: const [
+                          Shadow(
+                            color: Colors.black26,
+                            blurRadius: 5,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                _buildAnimatedButton(
+                  'LOGIN',
+                  Colors.white,
+                  const Color(0xFFff7e5f),
+                  Colors.white,
+                  () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildAnimatedButton(
+                  'REGISTER',
+                  const Color(0xFFff7e5f),
+                  Colors.white,
+                  const Color(0xFFff7e5f),
+                  () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterPage()));
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnimatedButton(String text, Color bgColor, Color textColor,
+      Color borderColor, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: borderColor, width: 2),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(2, 4),
             ),
           ],
-        ));
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 18,
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+          ),
+        ),
+      ),
+    );
   }
 }
+
