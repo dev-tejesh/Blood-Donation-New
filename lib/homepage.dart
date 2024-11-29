@@ -1,4 +1,3 @@
-
 import 'package:blooddonation/deleteuser.dart';
 import 'package:blooddonation/donateblood.dart';
 import 'package:blooddonation/main.dart';
@@ -10,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+  const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -18,8 +17,9 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  //signout function
-  tej() async {
+
+  // Sign-out function
+  Future<void> tej() async {
     await FirebaseAuth.instance.signOut();
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove('repeat');
@@ -33,175 +33,196 @@ class _HomepageState extends State<Homepage> {
         appBar: AppBar(
           backgroundColor: Colors.cyan,
           title: const Text(
-            'Hey Welcome',
-            textAlign: TextAlign.center,
+            'Hey, Welcome!',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          centerTitle: true,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       border: Border.all(width: 5),
-            //       color: Colors.red,
-            //     ),
-            //     child: const Image(
-            //       image: AssetImage('assets/bloodimg.png'),
-            //       height: 200,
-            //     ),
-            //   ),
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.cyan.shade100, Colors.cyan.shade600],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Network Image Section
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    'https://t3.ftcdn.net/jpg/02/22/82/30/360_F_222823036_n9ocpis9ILjK6KuOMV4v7urh4dlHCvSq.jpg',
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 200,
+                        color: Colors.grey.shade300,
+                        child: const Center(
+                          child: Text(
+                            'Image failed to load',
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // Donate Blood Section
+              _buildActionCard(
+                title: 'DONATE BLOOD',
+                icon: Icons.bloodtype,
                 onTap: () {
                   Get.to(const Donateblood());
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5),
-                    color: Colors.red,
-                  ),
-                  height: 100,
-                  width: 1000,
-                  // color: Colors.red,
-                  child: const Center(
-                      child: Text(
-                    'DONATE BLOOD',
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  )),
-                ),
+                color: Colors.red.shade400,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
+              const SizedBox(height: 20),
+              // Need Blood Section
+              _buildActionCard(
+                title: 'NEED BLOOD',
+                icon: Icons.health_and_safety,
                 onTap: () {
                   Get.to(const Needblood());
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5),
-                    color: Colors.red,
-                  ),
-                  height: 100,
-                  width: 1000,
-                  child: const Center(
-                      child: Text(
-                    'NEED BLOOD',
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  )),
-                ),
+                color: Colors.red.shade700,
               ),
-            )
+            ],
+          ),
+        ),
+        drawer: _buildDrawer(),
+      ),
+    );
+  }
+
+  Widget _buildActionCard({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
           ],
         ),
-        drawer: Container(
-          width: 250,
-          child: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10, 0, 0),
-              child: Column(
-                // padding: EdgeInsets.zero,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(const Registeredusers());
-                    },
-                    child: Container(
-                      width: 1000,
-                      height: 40,
-                      // color: Colors.green,
-                      child: const Center(
-                          child: Text(
-                        'REGISTERED USERS',
-                        // style: TextStyle(color: Colors.black),
-                      )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(const Donateblood());
-                    },
-                    child: Container(
-                      width: 1000,
-                      height: 40,
-                      // color: Colors.green,
-                      child: const Center(
-                          child: Text(
-                        'DONATE BLOOD',
-                        // style: TextStyle(color: Colors.black),
-                      )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(const Needblood());
-                    },
-                    child: Container(
-                      width: 1000,
-                      height: 40,
-                      // color: Colors.green,
-                      child: const Center(
-                          child: Text(
-                        'NEED BLOOD',
-                        // style: TextStyle(color: Colors.black),
-                      )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(const Deletedata());
-                    },
-                    child: Container(
-                      width: 1000,
-                      height: 40,
-                      // color: Colors.green,
-                      child: const Center(
-                          child: Text(
-                        'DELETE PROFILE',
-                        // style: TextStyle(color: Colors.black),
-                      )),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      // Get.to(MyHomePage(title: 'tej'));
-                      tej();
-                    },
-                    child: Container(
-                      width: 1000,
-                      height: 40,
-                      // color: Colors.green,
-                      child: const Center(
-                          child: Text(
-                        'LOGOUT',
-                        // style: TextStyle(color: Colors.black),
-                      )),
-                    ),
-                  )
-                ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 30,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: Container(
+        color: Colors.cyan.shade100,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.cyan.shade300, Colors.cyan.shade600],
+                ),
+              ),
+              child: const Center(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            _buildDrawerItem(
+              title: 'REGISTERED USERS',
+              onTap: () {
+                Get.to(const Registeredusers());
+              },
+              icon: Icons.people,
+            ),
+            _buildDrawerItem(
+              title: 'DONATE BLOOD',
+              onTap: () {
+                Get.to(const Donateblood());
+              },
+              icon: Icons.bloodtype,
+            ),
+            _buildDrawerItem(
+              title: 'NEED BLOOD',
+              onTap: () {
+                Get.to(const Needblood());
+              },
+              icon: Icons.health_and_safety,
+            ),
+            _buildDrawerItem(
+              title: 'DELETE PROFILE',
+              onTap: () {
+                Get.to(const Deletedata());
+              },
+              icon: Icons.delete,
+            ),
+            _buildDrawerItem(
+              title: 'LOGOUT',
+              onTap: tej,
+              icon: Icons.logout,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem({
+    required String title,
+    required VoidCallback onTap,
+    required IconData icon,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.cyan.shade700),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
 }
-
-// Container(
-//           padding: EdgeInsets.all(20),
-//           child: InkWell(
-//               onTap: () {
-//                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-//                   return MyHomePage(
-//                     title: "ffdf",
-//                   );
-//                 }));
-//               },
-//               child: Text('logout')),
-
-//         ),
